@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  MEMBER
+  ADMIN
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  firstName     String
+  lastName      String
+  email         String    @unique
+  phone         String
+  dateOfBirth   DateTime
+  address       String
+  password      String
+  role          UserRole  @default(MEMBER)
+  libraryCard   LibraryCard?
+  borrowings    Borrowing[]
+  messages      Message[]
+  progress      UserProgress[]
+  evidence      Evidence[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Book {
+  id          Int      @id @default(autoincrement())
+  title       String
+  author      String
+  category    String
+  isbn        String   @unique
+  description String
+  totalCopies Int      @default(1)
+  available   Int      @default(1)
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  borrowings  Borrowing[]
+}
+
+model LibraryCard {
+  id         Int      @id @default(autoincrement())
+  cardNumber String   @unique
+  userId     Int      @unique
+  user       User     @relation(fields: [userId], references: [id])
+  status     String   @default("ACTIVE")
+  issuedAt   DateTime @default(now())
+  expiresAt  DateTime
+}
+
+model Borrowing {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  bookId      Int
+  book        Book     @relation(fields: [bookId], references: [id])
+  borrowedAt  DateTime @default(now())
+  dueDate     DateTime
+  returnedAt  DateTime?
+  status      String   @default("BORROWED")
+}
+
+model Announcement {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  author    String
+  createdAt DateTime @default(now())
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  name      String
+  email     String
+  subject   String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  action    String
+  userId    Int?
+  ipAddress String?
+  timestamp DateTime @default(now())
+}
+
+model Challenge {
+  id          Int             @id @default(autoincrement())
+  title       String
+  description String
+  difficulty  String
+  category    String
+  hint        String
+  flag        String         @unique
+  points      Int
+  order       Int
+  users       UserProgress[]
+}
+
+model UserProgress {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  challengeId Int
+  completed   Boolean  @default(false)
+  completedAt DateTime?
+  user        User     @relation(fields: [userId], references: [id])
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+
+  @@unique([userId, challengeId])
+}
+
+model Evidence {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  title       String
+  endpoint    String
+  method      String
+  requestBody String?
+  responseBody String?
+  finding     String
+  severity    String
+  notes       String
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+}
