@@ -1,0 +1,5 @@
+0000000000000000000000000000000000000000 c1b0a6f0d9eda64ef6977e1ffd7675c9992e013a HediChouaieb <hadichouaieb20@gmail.com> 1789807916 +0100	commit (initial): fixer
+c1b0a6f0d9eda64ef6977e1ffd7675c9992e013a 0000000000000000000000000000000000000000 HediChouaieb <hadichouaieb20@gmail.com> 1789808200 +0100	Branch: renamed refs/heads/master to refs/heads/courses
+0000000000000000000000000000000000000000 c1b0a6f0d9eda64ef6977e1ffd7675c9992e013a HediChouaieb <hadichouaieb20@gmail.com> 1789808200 +0100	Branch: renamed refs/heads/master to refs/heads/courses
+c1b0a6f0d9eda64ef6977e1ffd7675c9992e013a cdf3cb015690f636c43ba61b42536a1fafe6ddc7 HediChouaieb <hadichouaieb20@gmail.com> 1789810006 +0100	commit: fix: bump next to 15.1+ for react 19 peer support
+cdf3cb015690f636c43ba61b42536a1fafe6ddc7 1f1b40d74c43c16f78f81b3c99d57d484372106a HediChouaieb <hadichouaieb20@gmail.com> 1789810168 +0100	commit: fix: run prisma generate on postinstall for vercel build
